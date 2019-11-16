@@ -1,0 +1,9 @@
+extends ../base
+
+block content
+  main.main
+    .test
+      p.test__text Secret: #{secret}
+      p.test__text Token: #{token}
+      p.test__text TokenValidates: #{tokenValidates}
+      img(src=`${dataUrl}`)

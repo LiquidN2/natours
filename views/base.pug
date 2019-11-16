@@ -1,0 +1,37 @@
+doctype html
+html(lang='en')
+  block head
+    head
+      meta(charset='UTF-8')
+      meta(name='viewport', content='width=device-width, initial-scale=1.0')
+      meta(http-equiv='X-UA-Compatible', content='ie=edge')
+
+      link(rel='stylesheet', href='/css/style.css')
+      link(rel='stylesheet', href='/css/checkbox.css')
+      link(rel='stylesheet', href='/css/custom.css')
+      link(rel='stylesheet', href='/css/togglepassword.css')
+      link(rel='stylesheet', href='/css/switch.css')
+      link(rel='stylesheet', href='/css/modal.css')
+      link(rel='shortcut icon', type='image/png', href='/img/favicon.png')
+      link(
+        href='https://fonts.googleapis.com/css?family=Lato:300,300i,700',
+        rel='stylesheet'
+      )
+
+      title Natours | #{title}
+
+  body
+    // HEADER
+    include layout/_header
+
+    // CONTENT
+    block content
+      h1 This is a placeholder heading
+    
+    // INCLUDE JS
+    block js
+
+    script(src='/js/bundle.js')
+
+    // FOOTER
+    include layout/_footer

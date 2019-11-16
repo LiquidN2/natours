@@ -1,0 +1,31 @@
+extends ../base
+
+block content
+  main.main
+    .signup-form
+      h2.heading-secondary.ma-bt-lg Signup your account
+      form#form-signup.form
+        .form__group
+          label.form__label(for='name') Name
+          input#name.form__input(type='text', placeholder='John Doe', required)
+        .form__group
+          label.form__label(for='email') Email address
+          input#email.form__input(type='email', placeholder='johndoe@example.com', required)
+        .form__group.ma-bt-md
+          label.form__label(for='password') Password
+          input#password.password.form__input(type='password', placeholder='••••••••', required, minlength='8')
+          .show-password 
+            svg.show-password__icon
+              use.eye-icon(xlink:href=`/img/icons.svg#icon-eye`)
+        .form__group.ma-bt-md
+          label.form__label(for='password-confirm') Confirm Password
+          input#password-confirm.password.form__input(type='password', placeholder='••••••••', required, minlength='8')
+          .show-password 
+            svg.show-password__icon
+              use.eye-icon(xlink:href=`/img/icons.svg#icon-eye`)
+        .form__group
+          label.container.form__label.form__label--custom-checkbox I agree to the Terms and Conditions of Natours
+            input#agreetc(type='checkbox', name='agreetc' required)
+            span.checkmark
+        .form__group
+          button#signup-form-btn.btn.btn--green Sign Up

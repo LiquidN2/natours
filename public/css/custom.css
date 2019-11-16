@@ -1,0 +1,42 @@
+.email-confirm {
+}
+
+.email-confirm__text {
+  font-size: 2rem;
+  text-align: center;
+}
+
+.email-confirm__text--success {
+  color: #55c57a;
+}
+
+.email-confirm__text--error {
+  color: #eb4d4b;
+}
+
+.test {
+}
+
+.test__text {
+  font-size: 2rem;
+}
+
+.form__group--inline {
+  display: flex;
+  align-items: center;
+}
+
+.form__label--inline {
+  margin-bottom: 0;
+  line-height: 1;
+  margin-left: 2rem;
+}
+
+.form__label--inline:hover {
+  cursor: pointer;
+}
+
+.qrcode__text {
+  font-size: 2rem;
+  text-align: center;
+}

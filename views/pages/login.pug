@@ -1,0 +1,25 @@
+extends ../base
+
+block content
+  main.main
+    .login-form
+      h2.heading-secondary.ma-bt-lg Log into your account
+      form#form-login.form
+        .form__group
+          label.form__label(for='email') Email address
+          input#email.form__input(type='email', placeholder='you@example.com', required)
+        .form__group.ma-bt-md
+          label.form__label(for='password') Password
+          input#password.password.form__input(type='password', placeholder='••••••••', required, minlength='8')
+          .show-password 
+            svg.show-password__icon
+              use.eye-icon(xlink:href=`/img/icons.svg#icon-eye`)
+        .form__group
+          label.container.form__label.form__label--custom-checkbox Stay signed in
+            input#remember(type='checkbox', name='remember')
+            span.checkmark
+        .form__group
+          button.btn.btn--green Login
+    
+    .forgot-password
+      a.forgot-password__link(href='/forgot-password') Forgot password?

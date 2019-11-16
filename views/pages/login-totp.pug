@@ -1,0 +1,18 @@
+extends ../base
+
+block content
+  main.main
+    .login-totp-form
+      h2.heading-secondary.ma-bt-lg Login
+      form#form-login-totp.form
+        .form__group.ma-bt-md
+          label.form__label(for='token') Please enter your 6-digit code
+          input#token.password.form__input(type='password', name='token', placeholder='••••••', maxlength='6', required)
+          .show-password 
+            svg.show-password__icon
+              use.eye-icon(xlink:href=`/img/icons.svg#icon-eye`)
+        .form__group
+          button.btn.btn--green Submit
+    
+    //- .forgot-password
+    //-   a.forgot-password__link(href='/forgot-password') Forgot password?

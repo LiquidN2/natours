@@ -1,0 +1,98 @@
+extends ../base
+
+mixin navItem(link, icon, text, active)
+  li(class=`${active ? 'side-nav--active' : ''}`)
+    a(href=`${link}`)
+      svg
+        use(xlink:href=`img/icons.svg#icon-${icon}`)
+      | #{text}
+
+mixin passwordInputItem(id, label)
+  .form__group
+    label.form__label(for=`${id}`)= label
+    input.password.form__input(id=`${id}` ,type='password', placeholder='••••••••', required, minlength='8')
+    .show-password 
+      svg.show-password__icon
+        use.eye-icon(xlink:href=`/img/icons.svg#icon-eye`)
+
+block content
+  main.main
+    .user-view
+      //- SIDE NAVIGATION
+      nav.user-view__menu
+        ul.side-nav
+          +navItem('/me', 'settings', 'Settings', true)
+          +navItem('/my-bookings', 'briefcase', 'My bookings')
+          +navItem('#', 'star', 'My reviews')
+          +navItem('#', 'credit-card', 'Billing')
+
+        - if (user.role === 'admin')
+          .admin-nav
+            h5.admin-nav__heading Admin
+            ul.side-nav
+              +navItem('#', 'map', 'Manage tours')
+              +navItem('#', 'users', 'Manage users')
+              +navItem('#', 'star', 'Manage reviews')
+              +navItem('#', 'briefcase', 'Manage bookings')
+
+      //- VIEW CONTENT
+      .user-view__content
+
+        //- Account Settings
+        .user-view__form-container
+          h2.heading-secondary.ma-bt-md Your account settings
+          form#form-account-settings.form.form-user-data
+            .form__group
+              label.form__label(for='name') Name
+              input#name.form__input(type='text', value=`${user.name}`, required)
+            .form__group.ma-bt-md
+              label.form__label(for='email') Email address
+              input#email.form__input(type='email', value=`${user.email}`, required)
+            .form__group.form__photo-upload
+              img.form__user-photo(src=`/img/users/${user.photo ? user.photo : 'default.jpg'}`, alt=`${user.name}'s photo`)
+              //- a.btn-text(href='') Choose new photo
+              input#photo.form__upload(type='file', name='photo', accept="image/*")
+              label(for='photo') Choose new photo
+            .form__group.right
+              button.btn.btn--small.btn--green Save settings
+        
+        .line &nbsp;
+
+        //- Manage Password
+        .user-view__form-container
+          h2.heading-secondary.ma-bt-md Password change
+          form#form-password.form.form-user-settings
+            +passwordInputItem('password-current', 'Current Password')
+            +passwordInputItem('password', 'New Password')
+            +passwordInputItem('password-confirm', 'Confirm New Password')
+            .form__group.right
+              button.btn.btn--small.btn--green.btn--save-password Save password
+
+        .line &nbsp;
+
+        //- Two-Factor Authentication
+        .user-view__form-container
+          h2.heading-secondary.ma-bt-md Advanced Security Settings
+          form#form-two-factor.form.form-two-factor
+            .form__group
+              p.form__label-description Two-factor authentication is recommended for better access 
+                | security. Before enabling this feature, please ensure you have an authentication
+                | app installed on your smartphone.  Popular authentication apps are 
+                | #[a.link-text.link-text--color(href='#') Google Authenticator] 
+                | or #[a.link-text.link-text--color(href='#') Microsoft Authenticator]
+            .form__group.form__group--inline
+              label.switch
+                if user.twoFactorEnabled
+                  input#twofactor(type='checkbox' checked)
+                else
+                  input#twofactor(type='checkbox')
+                span.slider.round
+              label.form__label.form__label--inline(for='twofactor') Two-Factor Authentication
+            .form__group.right
+              button.btn.btn--small.btn--green Save setting
+
+  .modal.modal--qrcode.modal--closed
+    .modal__content.modal__content--vertical.modal__content--center.modal__content--qrcode
+      //- img.qrcode__image.ma-bt-md(src='/img/sample-qrcode.png')
+      p.qrcode__text.ma-bt-md Please scan the QRCode above using an authentication app on your smartphone
+      button#btn-close-modal-qrcode.btn.btn--small.btn--green Close
