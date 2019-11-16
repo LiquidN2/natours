@@ -16,7 +16,7 @@ const Email = require('./../../utils/email');
  * @param {object}  res        response object of express route callback
  * @param {boolean} remember   stay signed in or not
  */
-const createSendToken = async (user, statusCode, res, remember = true) => {
+const createSendToken = async (user, statusCode, req, res, remember = true) => {
   const token = await user.generateToken();
 
   // if user do not want to stay signed in, create a session cookie (expires = 0)
@@ -30,12 +30,11 @@ const createSendToken = async (user, statusCode, res, remember = true) => {
   const cookieValue = token;
   const cookieOptions = {
     expires: expires,
-    httpOnly: true
-    // secure: process.env.NODE_ENV === 'production' // set to 'true' to send cookie via https in production
+    httpOnly: true,
+    secure: req.secure || req.headers('x-forwarded-proto') === 'https'
   };
 
   if (process.env.NODE_ENV === 'production') {
-    cookieOptions.secure = true;
     cookieOptions.sameSite = 'strict';
   }
 
@@ -99,7 +98,7 @@ const signup = catchAsync(async (req, res, next) => {
   await welcomeEmail.sendWelcome();
 
   // 3. Send access token
-  await createSendToken(newUser, 201, res);
+  await createSendToken(newUser, 201, req, res);
 });
 
 /** -----------------------
@@ -126,7 +125,7 @@ const login = catchAsync(async (req, res, next) => {
 
   // Step 3a - if everything is ok and 2fa is not enabled, send token
   if (!user.twoFactorEnabled) {
-    return await createSendToken(user, 200, res, remember);
+    return await createSendToken(user, 200, req, res, remember);
   }
 
   // step 3b - if 2fa is enabled, instruct client to redirect
@@ -181,7 +180,7 @@ const loginTotp = catchAsync(async (req, res, next) => {
     return next(error);
   }
 
-  await createSendToken(user, 200, res, remember);
+  await createSendToken(user, 200, req, res, remember);
 });
 
 /** ------------------------
@@ -420,7 +419,7 @@ const resetPassword = catchAsync(async (req, res, next) => {
   await user.save();
 
   // 4. Log the user in, send new JWT
-  await createSendToken(user, 200, res);
+  await createSendToken(user, 200, req, res);
 });
 
 /** ----------------------------
@@ -447,7 +446,7 @@ const updatePassword = catchAsync(async (req, res, next) => {
   await user.save();
 
   // 4. Log user in (send token)
-  await createSendToken(user, 200, res);
+  await createSendToken(user, 200, req, res);
   // const token = await user.generateToken();
 
   // res.status(200).json({

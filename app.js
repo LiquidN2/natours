@@ -28,6 +28,8 @@ const env = process.env.NODE_ENV || 'development';
 
 const app = express();
 
+app.enable('trust proxy');
+
 /** ------------------------
  * ------ VIEW ENGINE ------
  * ------------------------- */
