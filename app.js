@@ -45,6 +45,7 @@ app.set('views', [
  * ------------------------------- */
 // Implement CORS
 app.use(cors());
+app.options('*', cors());
 
 // Set security HTTP headers
 app.use(helmet());
