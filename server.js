@@ -36,3 +36,12 @@ process.on('unhandledRejection', err => {
   // close the server before shutting down the application
   server.close(() => process.exit(1));
 });
+
+// HANDLE SIGTERM EVENTS FROM HEROKU
+process.on('SIGTERM', () => {
+  console.log('SIGTERM RECEIVED. Shutting down... 👋');
+  // close the server before shutting down the application
+  server.close(() => {
+    console.log('💥 Process terminated!');
+  });
+});
