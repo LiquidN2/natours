@@ -9,6 +9,7 @@ const rateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+const cors = require('cors');
 
 // LOAD OPTIMIZATION MODULE
 const compression = require('compression');
@@ -42,6 +43,9 @@ app.set('views', [
 /** ------------------------------
  * ------ GLOBAL MIDDLEWARE ------
  * ------------------------------- */
+// Implement CORS
+app.use(cors());
+
 // Set security HTTP headers
 app.use(helmet());
 
