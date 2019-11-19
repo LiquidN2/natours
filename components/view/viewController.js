@@ -5,6 +5,17 @@ const StartDate = require('./../startDate/startDateModel');
 const catchAsync = require('./../../utils/catchAsync');
 const AppError = require('./../../utils/appError');
 
+const alerts = (req, res, next) => {
+  const { alert } = req.query;
+  if (alert === 'booking') {
+    res.locals.alert = `
+      Your booking is successful! Please check your email for confirmation.
+      If your booking does not show up here immediately, please come back later.
+    `;
+  }
+  next();
+};
+
 const getOverview = catchAsync(async (req, res, next) => {
   // 1. Get data
   const tours = await Tour.find()
@@ -102,6 +113,7 @@ const getLoginWithTotp = (req, res, next) => {
 };
 
 module.exports = {
+  alerts,
   getOverview,
   getTour,
   getLoginForm,

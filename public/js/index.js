@@ -11,6 +11,7 @@ import {
   resetPassword,
   configureTwoFactor
 } from './auth';
+import { showAlert } from './alert';
 
 // DOM ELEMENTS
 const formSignup = document.getElementById('form-signup');
@@ -192,3 +193,6 @@ if (formBooking) {
     bookTourBtn.textContent = 'Book';
   });
 }
+
+const alertMessage = document.querySelector('body').dataset.alert;
+if (alertMessage) showAlert('success', alertMessage, 20);
