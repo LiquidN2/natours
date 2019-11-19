@@ -16,17 +16,13 @@ const getCheckoutSession = catchAsync(async (req, res, next) => {
 
   const host =
     process.env.NODE_ENV === 'production'
-      ? req.get('host')
+      ? req.host
       : `${req.host}:${process.env.PORT}`;
 
   // 2. Create checkout session
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
-    // success_url: `${req.protocol}://${req.host}${port}/?tour=${req.params.tourId}&user=${req.user.id}&price=${tour.price}&startDate=${req.params.dateId}`,
-    success_url: `${req.protocol}://${host}/my-bookings?alert=booking`,
-    cancel_url: `${req.protocol}://${host}/tour/${tour.slug}`,
     customer_email: req.user.email,
-    // client_reference_id: req.params.tourId,
     client_reference_id: `${req.params.tourId}_${req.params.dateId}`,
     line_items: [
       {
@@ -37,7 +33,10 @@ const getCheckoutSession = catchAsync(async (req, res, next) => {
         currency: 'aud',
         quantity: 1
       }
-    ]
+    ],
+    // success_url: `${req.protocol}://${req.host}${port}/?tour=${req.params.tourId}&user=${req.user.id}&price=${tour.price}&startDate=${req.params.dateId}`,
+    success_url: `${req.protocol}://${host}/my-bookings?alert=booking`,
+    cancel_url: `${req.protocol}://${host}/tour/${tour.slug}`
   });
 
   // 3. Respond with session
@@ -46,18 +45,6 @@ const getCheckoutSession = catchAsync(async (req, res, next) => {
     session
   });
 });
-
-// const createBookingCheckout = catchAsync(async (req, res, next) => {
-//   // console.log('Creating booking...');
-//   const { tour, user, price, startDate } = req.query;
-
-//   if (!tour || !user || !price || !startDate) return next();
-
-//   await Booking.create({ tour, user, price, startDate });
-//   // console.log('Booking created. Redirecting...');
-//   // res.redirect(req.originalUrl.split('?')[0]);
-//   res.redirect('/');
-// });
 
 const createBookingCheckout = async session => {
   const [tour, startDate] = session.client_reference_id.split('_');
@@ -77,15 +64,17 @@ const webhookCheckout = (req, res, next) => {
       process.env.STRIPE_WEBHOOK_SECRET
     );
   } catch (error) {
-    return res.status(400).send(`Webhook error: ${error.message}`);
+    return res.status(400).send(`Webhook Error: ${error.message}`);
   }
 
   if (event.type === 'checkout.session.completed') {
-    createBookingCheckout(event.data.object);
-    return res.status(200).json({
-      recevied: true
-    });
+    const session = event.data.object;
+    createBookingCheckout(session);
   }
+
+  return res.status(200).json({
+    recevied: true
+  });
 };
 
 const createBooking = handlerFactory.createOne(Booking);
