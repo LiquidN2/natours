@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 
 // LOAD SECURITY MODULES
 const helmet = require('helmet');
@@ -67,7 +68,7 @@ if (env === 'production') {
 // The body of Stripe request needs to be in raw form (before being converted to json)
 app.post(
   '/webhook-checkout',
-  express.raw({ type: 'application/json' }),
+  bodyParser.raw({ type: 'application/json' }),
   bookingController.webhookCheckout
 );
 
