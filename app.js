@@ -20,6 +20,7 @@ const tourRouter = require('./components/tour/tourRoutes');
 const userRouter = require('./components/user/userRoutes');
 const viewRouter = require('./components/view/viewRoutes');
 const bookingRouter = require('./components/booking/bookingRoutes');
+const bookingController = require('./components/booking/bookingController');
 const testRouter = require('./components/test/testRoutes');
 
 const AppError = require('./utils/appError');
@@ -62,6 +63,13 @@ if (env === 'production') {
   });
   app.use('/api', limiter);
 }
+
+// The body of Stripe request needs to be in raw form (before being converted to json)
+app.post(
+  'webhook-checkout',
+  express.raw({ type: 'application/json' }),
+  bookingController.webhookCheckout
+);
 
 // JSON body parser (parse request body and populate req.body)
 app.use(express.json({ limit: '10kb' }));
