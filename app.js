@@ -66,7 +66,7 @@ if (env === 'production') {
 
 // The body of Stripe request needs to be in raw form (before being converted to json)
 app.post(
-  'webhook-checkout',
+  '/webhook-checkout',
   express.raw({ type: 'application/json' }),
   bookingController.webhookCheckout
 );
