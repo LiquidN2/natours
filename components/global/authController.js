@@ -31,7 +31,7 @@ const createSendToken = async (user, statusCode, req, res, remember = true) => {
   const cookieOptions = {
     expires: expires,
     httpOnly: true,
-    secure: req.secure || req.headers('x-forwarded-proto') === 'https'
+    secure: req.secure || req.headers['x-forwarded-proto'] === 'https'
   };
 
   if (process.env.NODE_ENV === 'production') {

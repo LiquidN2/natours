@@ -55,7 +55,7 @@ app.use(helmet());
 // Development logger
 if (env === 'development') app.use(logger('dev'));
 
-// Rate limitter (prevent DDoS or brute force attack)
+// Rate limiter (prevent DDoS or brute force attack)
 if (env === 'production') {
   const limiter = rateLimit({
     max: 100, // 100 requests
@@ -88,7 +88,7 @@ app.use(xss());
 // Prevents parameter pollution
 app.use(hpp());
 
-// Searving static files
+// Serving static files
 app.use(express.static(path.resolve(__dirname, 'public')));
 
 // Compress server response
