@@ -6,7 +6,7 @@ if (dotenv) dotenv.config();
 // require('./config/config');
 
 // START LISTENING FOR UNCAUGHT EXCEPTION (should be placed at the top of the code)
-process.on('uncaughtException', err => {
+process.on('uncaughtException', (err) => {
   console.log('UNCAUGHT EXCEPTION! 💥 Shutting down...');
   console.log(err.name, err.message);
   // close the server before shutting down the application
@@ -30,7 +30,7 @@ const server = app.listen(port, () => {
 });
 
 // HANDLE ALL PROMISE REJECTION
-process.on('unhandledRejection', err => {
+process.on('unhandledRejection', (err) => {
   console.log('UNHANDLED REJECTION! 💥 Shutting down...');
   console.log(err.name, err.message);
   // close the server before shutting down the application
